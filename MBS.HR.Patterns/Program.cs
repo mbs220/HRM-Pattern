@@ -34,23 +34,32 @@ namespace MBS.HR.Patterns
             var step1 = proxy.ExecuteFirst(); // pass to UI
             // pass to UI
             var jsonStep1 = JsonConvert.SerializeObject(step1);
+            
             // gather from UI
-
-
-
             var factory = PerOrganSettingFactory.LoadFromJson<DefaultImplementation>(jsonStep1);
 
 
 
             var empl = factory.InitialValue.EmployeeId;
 
+            factory.InitialValue.ImpleDate = DateTime.Now;
+
+            IIssueProxy proxy2 = new ExportStepsToUI(factory);
 
 
-
-            var step2 = proxy.ExecuteSecond(); // Gather from UI
-            var step3 = proxy.ExecuteThird(); // Gather form UI
+            var step2 = proxy2.ExecuteSecond(); // Gather from UI
 
             var jsonStep2 = JsonConvert.SerializeObject(step2);
+
+            // gather from UI
+            var factory2 = PerOrganSettingFactory.LoadFromJson<DefaultImplementation>(jsonStep2);
+
+
+            IIssueProxy proxy3 = new ExportStepsToUI(factory2);
+
+
+            var step3 = proxy3.ExecuteThird(); // Gather form UI
+
             var jsonStep3 = JsonConvert.SerializeObject(step3);
 
 

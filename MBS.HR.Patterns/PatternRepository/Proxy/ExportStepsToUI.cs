@@ -29,10 +29,12 @@ namespace MBS.HR.Patterns.PatternRepository.Proxy
         }
         public  IStep2 ExecuteSecond()
         {
+            _factory.InitialValue.EmployeeTypeId = -1000;
             return _factory;
         }
         public  IStep3 ExecuteThird()
         {
+            _factory.InitialValue.OrderTypeId = 505;
             return _factory;
         }
     }
