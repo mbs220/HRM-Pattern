@@ -14,9 +14,23 @@ namespace MBS.HR.Patterns.BusinessModel
             _6397 = 6397,
             _191 = 191,
             _6007 = 6007,
-            _6440 = 6440 ,
+            _6440 = 6440,
             _5555 = 5555,
             Shared = 0
         }
+
+        public enum IssueType
+        {
+            Normal,// عادی
+            Cancelation,// لغو
+            Corrigendum // اصلاحیه
+        }
+
+        public enum IssueDateState
+        {
+            Postponement, // معوق
+            Normal // عادی
+        }
+
     }
 }

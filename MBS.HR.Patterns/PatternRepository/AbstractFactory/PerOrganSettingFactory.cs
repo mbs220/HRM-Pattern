@@ -7,15 +7,19 @@ using MBS.HR.Patterns.BusinessModel;
 using MBS.HR.Patterns.PatternRepository.AbstractFactory.Interfaces;
 using MBS.HR.Patterns.PatternRepository.Strategy;
 using Newtonsoft.Json;
+using MBS.HR.Patterns.JsonConfigs;
+using MBS.HR.Patterns.JsonConfig;
 
 namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
 {
-    public abstract class PerOrganSettingFactory: IStep1, IStep2, IStep3
+    public abstract class PerOrganSettingFactory : IStep1, IStep2, IStep3
     {
         #region fields
 
         private GlobalSystemSetting _setting;
         private Enums.Organ organ;
+        private Enums.IssueDateState issueDateState = Enums.IssueDateState.Normal;
+        private Enums.IssueType issueType = Enums.IssueType.Normal;
         private IssueInitialModel _init;
         private bool allowReInit = false;
         private LastIssueViewModel _lastIssue;
@@ -38,8 +42,14 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
         [JsonProperty]
         public IssueInitialModel InitialValue
         {
-            get { return _init; }
-            private set { _init = value; }
+            get
+            {
+                return _init;
+            }
+            private set
+            {
+                _init = value;
+            }
         }
         /// <summary>
         /// تنظیمات اولیه نرم افزار
@@ -70,6 +80,40 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
             private set { _permission = value; }
 
         }
+        /// <summary>
+        /// وضعیت حکم از نظر تاریخ = معوق/عادی
+        /// </summary>
+        [JsonProperty]
+        public Enums.IssueDateState IssueDateState
+        {
+            get
+            {
+                return issueDateState;
+            }
+
+            private set
+            {
+                issueDateState = value;
+            }
+        }
+
+
+        /// <summary>
+        /// وضعیت حکم از نظر نوع = اصلاحیه/لغو/عادی
+        /// </summary>
+        [JsonProperty]
+        public Enums.IssueType IssueType
+        {
+            get
+            {
+                return issueType;
+            }
+
+            private set
+            {
+                issueType = value;
+            }
+        }
 
 
 
@@ -83,6 +127,22 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
             _setting = Singleton.LoadGlobalSetting.Instance;
         }
 
+        /// <summary>
+        /// متد تشخیص اینکه حکم معوق است یا نه
+        /// </summary>
+        /// <returns>وضعیت</returns>
+        public virtual Enums.IssueDateState DetectIssueDateState()
+        {
+            var impl = InitialValue.ImpleDate.Date;//تاریخ صدور
+            var now = DateTime.Now.Date; // تاریخ اکنون
+
+            if (now > impl)
+            {
+                return Enums.IssueDateState.Postponement;
+            }
+
+            return Enums.IssueDateState.Normal;
+        }
 
         ///// <summary>
         ///// ایجاد آبجکت صادر کننده حکم
@@ -100,22 +160,30 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
         /// </summary>
         /// <param name="org"></param>
         /// <param name="init"></param>
-        protected PerOrganSettingFactory(Enums.Organ org, IssueInitialModel init) :this()//this(org)
+        [JsonConstructor]
+        protected PerOrganSettingFactory(Enums.Organ org,
+            IssueInitialModel init) : this()//this(org)
         {
             organ = org;
             Init(init);
+
+            //یافتن وضعیت حکم از نظر تاریخ اجرا
+            IssueDateState = DetectIssueDateState();
+            //نوع حکم از نظر ماهیت آن
+            IssueType = init.IssueType;
+
             Console.WriteLine(nameof(PerOrganSettingFactory));
             Console.WriteLine(Organ);
             Console.WriteLine(init);
         }
-       
+
         /// <summary>
         /// مقدار دهی اولیه بابت صدور حکم
         /// </summary>
         /// <param name="init"></param>
         public virtual void Init(IssueInitialModel init)
         {
-            if (_init != null && allowReInit==false)
+            if (_init != null && allowReInit == false)
             {
                 throw new Exception("قبلا این آبجکت شکل گرفته است");
             }
@@ -147,16 +215,19 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
 
         #region statics
 
-        public static TResult LoadFromJson<TResult>(string json) 
+        public static TResult LoadFromJson<TResult>(string json)
             where TResult : PerOrganSettingFactory
         {
             var setting = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
                 Formatting = Formatting.Indented,
-                MaxDepth = 50
+                MaxDepth = 50,
+                //ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+                //PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             };
 
+            setting.Converters.Add(new PerOrganSettingFactoryJsonConverter());
 
             var factory = JsonConvert
                 .DeserializeObject<TResult>(json, setting);

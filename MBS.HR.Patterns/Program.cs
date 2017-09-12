@@ -23,7 +23,9 @@ namespace MBS.HR.Patterns
             {
                 //اطلاعات نوع حکم و تاریخ و پرسنل و ...
                 // اینجا پر می شود
-                EmployeeId =  3490
+                EmployeeId =  3490,
+                ImpleDate = DateTime.Now.AddDays(-3),
+
             };
 
             PerOrganSettingFactory defaultIssue =
