@@ -7,7 +7,7 @@ using MBS.HR.Patterns.BusinessModel;
 using MBS.HR.Patterns.PatternRepository.AbstractFactory.Interfaces;
 using MBS.HR.Patterns.PatternRepository.Strategy;
 using Newtonsoft.Json;
-using MBS.HR.Patterns.JsonConfigs;
+
 using MBS.HR.Patterns.JsonConfig;
 
 namespace MBS.HR.Patterns.PatternRepository.AbstractFactory

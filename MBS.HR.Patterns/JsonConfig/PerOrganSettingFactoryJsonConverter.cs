@@ -1,5 +1,6 @@
 ﻿using MBS.HR.Patterns.BusinessLayer;
 using MBS.HR.Patterns.BusinessModel;
+using MBS.HR.Patterns.PatternRepository.AbstractFactory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,7 +15,8 @@ namespace MBS.HR.Patterns.JsonConfig
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(DefaultImplementation);
+            //return objectType == typeof(DefaultImplementation);
+            return typeof(PerOrganSettingFactory).IsAssignableFrom(objectType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
