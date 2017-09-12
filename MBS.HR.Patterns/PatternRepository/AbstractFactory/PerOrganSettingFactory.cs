@@ -24,6 +24,8 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
         private bool allowReInit = false;
         private LastIssueViewModel _lastIssue;
         private CheckHasPermissionViewModel _permission;
+        private List<WageFactorItem> _wages = new  List<WageFactorItem>();
+        private List<OutputFactorItem> _outputs = new List<OutputFactorItem>();
         #endregion
 
         #region Property
@@ -115,7 +117,56 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
             }
         }
 
+        /// <summary>
+        /// لسیت آیتم های حقوقی حکم جدید و در حال صدور
+        /// </summary>
+        [JsonProperty]
+        public List<WageFactorItem> Wages {
+            get { return _wages; }
+        }
 
+
+        /// <summary>
+        /// لسیت آیتم های کارکردی حکم جدید و در حال صدور
+        /// </summary>
+        [JsonProperty]
+        public List<OutputFactorItem> Outputs
+        {
+            get { return _outputs; }
+        }
+
+
+
+        #endregion
+
+
+        #region Event
+
+        public delegate FormulaResponse CommunicateWithFormula(FormulaRequest request);
+        /// <summary>
+        /// مراجعه به تابع فرمول ها هنگام محاسبه آیتم ها
+        /// </summary>
+        public event CommunicateWithFormula onCommunicateWithFormula;
+
+
+        public delegate void AfterCreateIssue(IssueViewModel issue);
+        /// <summary>
+        /// فراخوانی متد هنگام ایجاد شدن حکم
+        /// </summary>
+        public event AfterCreateIssue onIssueCreated;
+
+        #endregion
+
+        #region EventWrapper
+        FormulaResponse InvokeCommunicateWithFormula(FormulaRequest request)
+        {
+            return onCommunicateWithFormula?.Invoke(request);
+        }
+
+        void InvokeAfterCreateIssue(IssueViewModel issue)
+        {
+            onIssueCreated?.Invoke(issue);
+        }
 
         #endregion
 
@@ -209,15 +260,50 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
             return _permission = strategy.CheckPermission(this);
         }
 
+        /// <summary>
+        /// فراخوانی محاسبه هر آیتم کارکردی
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public virtual OutputFactorItem CalculateOutputFactorItem(OutputFactorItem item)
+        {
+            return item;
+        }
+
+        /// <summary>
+        /// فراخوانی محاسبه هر آیتم حقوقی
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public virtual WageFactorItem CalculateWageFactorItem(WageFactorItem item)
+        {
+            return item;
+        }
 
 
+        /// <summary>
+        /// محاسبه آیتم های حقوقی
+        /// </summary>
+        public void CalculateWges()
+        {
 
+        }
+
+        /// <summary>
+        /// محاسبه آیتم های کارکردی
+        /// </summary>
+        public void CalculateOutputs()
+        {
+
+        }
 
         #region statics
 
         public static TResult LoadFromJson<TResult>(string json)
             where TResult : PerOrganSettingFactory
         {
+            //میتوان فرایند کار با json را 
+            // با رمزنگاری ترکیب کرد تا امنیت ارتقاء یابد
             var setting = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,

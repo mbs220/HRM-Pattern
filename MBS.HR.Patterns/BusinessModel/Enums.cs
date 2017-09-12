@@ -32,5 +32,14 @@ namespace MBS.HR.Patterns.BusinessModel
             Normal // عادی
         }
 
+        public enum IssueItemType
+        {
+            Wage,Output
+        }
+
+        public enum IssueItemEnterType
+        {
+            FixValue,UserInput,LastIssue,ByFormula
+        }
     }
 }

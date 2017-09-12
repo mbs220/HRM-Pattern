@@ -50,10 +50,15 @@
     <Compile Include="BusinessLayer\DefaultImplementation.cs" />
     <Compile Include="BusinessModel\CheckHasPermissionViewModel.cs" />
     <Compile Include="BusinessModel\Enums.cs" />
+    <Compile Include="BusinessModel\FormulaRequest.cs" />
+    <Compile Include="BusinessModel\FormulaResponse.cs" />
     <Compile Include="BusinessModel\GlobalSystemSetting.cs" />
     <Compile Include="BusinessModel\IssueInitialModel.cs" />
+    <Compile Include="BusinessModel\IssueViewModel.cs" />
     <Compile Include="BusinessModel\LastIssueViewModel.cs" />
+    <Compile Include="BusinessModel\WageFactorItem.cs" />
     <Compile Include="JsonConfig\PerOrganSettingFactoryJsonConverter.cs" />
+    <Compile Include="OutputFactorItem.cs" />
     <Compile Include="PatternRepository\Proxy\ExportStepsToUI.cs" />
     <Compile Include="PatternRepository\AbstractFactory\Interfaces\IStep1.cs" />
     <Compile Include="PatternRepository\AbstractFactory\Interfaces\IStep2.cs" />

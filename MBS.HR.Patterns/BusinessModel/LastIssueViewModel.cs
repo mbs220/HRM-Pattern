@@ -12,8 +12,18 @@ namespace MBS.HR.Patterns.BusinessModel
         {
             Console.WriteLine(nameof(LastIssueViewModel));
         }
-
+        /// <summary>
+        /// شناسه حکم قبلی
+        /// </summary>
         public int LastRecInterdictId { get; set; }
+        /// <summary>
+        /// آیتم های کارکردی حکم قبلی
+        /// </summary>
+        public List<OutputFactorItem> Outputs { get; set; }
+        /// <summary>
+        /// آیتم های حقوقی حکم قبل
+        /// </summary>
+        public List<WageFactorItem> Wages { get; set; }
 
     }
 }
