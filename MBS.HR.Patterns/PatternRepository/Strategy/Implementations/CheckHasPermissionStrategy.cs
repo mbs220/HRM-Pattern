@@ -8,7 +8,8 @@ using MBS.HR.Patterns.PatternRepository.AbstractFactory;
 
 namespace MBS.HR.Patterns.PatternRepository.Strategy.Implementations
 {
-    class CheckHasPermissionStrategy: ICheckHasPermissionStrategy
+    [Serializable]
+    class CheckHasPermissionStrategy : ICheckHasPermissionStrategy
     {
         /// <summary>
         /// استراتژی بررسی دسترسی صدور حکم

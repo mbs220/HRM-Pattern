@@ -8,7 +8,8 @@ using MBS.HR.Patterns.PatternRepository.AbstractFactory;
 
 namespace MBS.HR.Patterns.BusinessLayer
 {
-    class BusImplementation : PerOrganSettingFactory
+    [Serializable]
+    sealed class BusImplementation : PerOrganSettingFactory
     {
        
 

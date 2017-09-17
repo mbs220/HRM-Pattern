@@ -12,6 +12,7 @@ using MBS.HR.Patterns.PatternRepository.Singleton;
 using MBS.HR.Patterns.PatternRepository.Strategy;
 using MBS.HR.Patterns.PatternRepository.Strategy.Implementations;
 using Newtonsoft.Json;
+using MBS.HR.Patterns.Security;
 
 namespace MBS.HR.Patterns
 {
@@ -28,9 +29,16 @@ namespace MBS.HR.Patterns
 
             };
 
-            PerOrganSettingFactory defaultIssue =
-                new DefaultImplementation(Enums.Organ.Shared, request);
+            List<string> hashList = new List<string>();
+            ModelSignManager security = new ModelSignManager();
 
+
+            PerOrganSettingFactory defaultIssue =
+                new DefaultImplementation(request);
+
+            var stream = security.SerializeModelArray(defaultIssue);
+            var md5_1 = security.CalculateMD5Hash(stream);
+            hashList.Add(md5_1);
 
             IIssueProxy proxy = new ExportStepsToUI(defaultIssue);
             var step1 = proxy.ExecuteFirst(); // pass to UI
@@ -40,7 +48,12 @@ namespace MBS.HR.Patterns
             // gather from UI
             var factory = PerOrganSettingFactory.LoadFromJson<DefaultImplementation>(jsonStep1);
 
+            var stream2 = security.SerializeModelArray(factory);
+            var md5_2 = security.CalculateMD5Hash(stream2);
+            hashList.Add(md5_2);
 
+
+            var change1 = security.HasModelChangedBySign(md5_1, md5_2);
 
             var empl = factory.InitialValue.EmployeeId;
 
@@ -57,6 +70,12 @@ namespace MBS.HR.Patterns
             var factory2 = PerOrganSettingFactory.LoadFromJson<DefaultImplementation>(jsonStep2);
 
 
+            var stream3 = security.SerializeModelArray(factory2);
+            var md5_3 = security.CalculateMD5Hash(stream3);
+            var change2 = security.HasModelChangedBySign(md5_2, md5_3);
+            hashList.Add(md5_3);
+
+
             IIssueProxy proxy3 = new ExportStepsToUI(factory2);
 
 
@@ -64,6 +83,24 @@ namespace MBS.HR.Patterns
 
             var jsonStep3 = JsonConvert.SerializeObject(step3);
 
+            var factory3 = PerOrganSettingFactory.LoadFromJson<DefaultImplementation>(jsonStep3);
+
+            var stream4 = security.SerializeModelArray(factory3);
+            var md5_4 = security.CalculateMD5Hash(stream4);
+            var change3 = security.HasModelChangedBySign(md5_3, md5_4);
+            hashList.Add(md5_4);
+
+            var tmp = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+
+            hashList.ForEach(sec => {
+
+                Console.WriteLine(sec);
+
+
+            });
+
+            Console.ForegroundColor = tmp;
 
             Console.WriteLine();
             Console.WriteLine(jsonStep1);

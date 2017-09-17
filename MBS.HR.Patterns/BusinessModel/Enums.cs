@@ -41,5 +41,12 @@ namespace MBS.HR.Patterns.BusinessModel
         {
             FixValue,UserInput,LastIssue,ByFormula
         }
+        public enum CalculationReason
+        {
+            Stop,/*اصلا اجرا نشود*/
+            Init,/*اولین بار اجرا است*/
+            ReCalculateByUserInput, /*مجدد محاسبه شود چون آیتم مقدار ورودی داشته*/
+            ReCalculateByOtherChanges /*مجدد محاسبه شود چون تغییری در آیتمی دیگر داشته*/
+        }
     }
 }

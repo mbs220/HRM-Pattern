@@ -19,22 +19,38 @@ namespace MBS.HR.Patterns.PatternRepository.Proxy
         }
         public  IStep1 ExecuteFirst()
         {
+
+             //_factory.Organ
+             //_factory.LogError.LogError
             IFindLastIssueStrategy findLastIssue = new FindLastIssueDefaultStrategy();
             ICheckHasPermissionStrategy checkPermission = new CheckHasPermissionStrategy();
 
             _factory.FindLastIssue(findLastIssue);
             _factory.HasPermission(checkPermission);
+            _factory.CalculateOutputs();
+            _factory.CalculateWages();
+            _factory.CalculateRecSummary();
 
             return _factory;
         }
         public  IStep2 ExecuteSecond()
         {
             _factory.InitialValue.EmployeeTypeId = -1000;
+
+            var reason = BusinessModel.Enums.
+                CalculationReason.ReCalculateByOtherChanges;
+
+            //اگر اصلا تغییری نداشته نباید مجدد فرخوانی شود
+            _factory.CalculateOutputs(reason);
+            _factory.CalculateWages(reason);
+            _factory.CalculateRecSummary(reason);
+
             return _factory;
         }
         public  IStep3 ExecuteThird()
         {
             _factory.InitialValue.OrderTypeId = 505;
+            //ذخیره در ذیتایبس
             return _factory;
         }
     }

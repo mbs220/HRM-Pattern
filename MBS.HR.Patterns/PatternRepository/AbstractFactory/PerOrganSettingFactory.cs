@@ -9,9 +9,11 @@ using MBS.HR.Patterns.PatternRepository.Strategy;
 using Newtonsoft.Json;
 
 using MBS.HR.Patterns.JsonConfig;
+using MBS.HR.Patterns.PatternRepository.Strategy.Implementations;
 
 namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
 {
+    [Serializable]
     public abstract class PerOrganSettingFactory : IStep1, IStep2, IStep3
     {
         #region fields
@@ -26,14 +28,30 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
         private CheckHasPermissionViewModel _permission;
         private List<WageFactorItem> _wages = new  List<WageFactorItem>();
         private List<OutputFactorItem> _outputs = new List<OutputFactorItem>();
+        private List<IssueViewModel> personelAllIssues = new List<IssueViewModel>();
+        private ILoggerStrategy logger = new DnnLogStrategy();
         #endregion
 
         #region Property
+
+
+
+        /// <summary>
+        /// لیست تمامی احکام پرسنل
+        /// </summary>
+        [JsonProperty]
+        protected List<IssueViewModel> AllIssue
+        {
+            get { return personelAllIssues; }
+            private set { personelAllIssues = value; }
+        }
+
+
         /// <summary>
         /// سازمان
         /// </summary>
         [JsonProperty]
-        protected Enums.Organ Organ
+        public Enums.Organ Organ
         {
             get { return organ; }
             private set { organ = value; }
@@ -57,7 +75,7 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
         /// تنظیمات اولیه نرم افزار
         /// </summary>
         [JsonProperty]
-        protected GlobalSystemSetting Setting
+        public GlobalSystemSetting Setting
         {
             get { return _setting; }
             private set { _setting = value; }
@@ -134,8 +152,13 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
         {
             get { return _outputs; }
         }
-
-
+        /// <summary>
+        /// رخداد نگار خطا
+        /// </summary>
+        public virtual ILoggerStrategy LogError
+        {
+            get { return logger; }
+        }
 
         #endregion
 
@@ -284,16 +307,61 @@ namespace MBS.HR.Patterns.PatternRepository.AbstractFactory
         /// <summary>
         /// محاسبه آیتم های حقوقی
         /// </summary>
-        public void CalculateWges()
+        public void CalculateWages
+            (Enums.CalculationReason reason=  Enums.CalculationReason.Init)
         {
+            if (reason == Enums.CalculationReason.Stop)
+            {
+                return;
+            }
+
+
+
+
+
+
+
+
 
         }
 
         /// <summary>
         /// محاسبه آیتم های کارکردی
         /// </summary>
-        public void CalculateOutputs()
+        public void CalculateOutputs
+            (Enums.CalculationReason reason = Enums.CalculationReason.Init)
         {
+            if (reason == Enums.CalculationReason.Stop)
+            {
+                return;
+            }
+
+
+
+
+
+
+
+
+        }
+
+        /// <summary>
+        /// محاسبه خلاصه حکم
+        /// </summary>
+        public void CalculateRecSummary
+            (Enums.CalculationReason reason = Enums.CalculationReason.Init)
+        {
+            if (reason == Enums.CalculationReason.Stop)
+            {
+                return;
+            }
+
+
+
+
+
+
+
 
         }
 

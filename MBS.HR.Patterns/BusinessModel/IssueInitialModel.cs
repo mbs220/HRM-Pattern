@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MBS.HR.Patterns.BusinessModel
 {
+    [Serializable]
     public class IssueInitialModel
     {
         public IssueInitialModel()

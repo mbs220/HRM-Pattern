@@ -25,11 +25,11 @@ namespace MBS.HR.Patterns.JsonConfig
             JObject jo = JObject.Load(reader);
 
             // Read the properties which will be used as constructor parameters
-            var code = jo["Organ"].ToObject<Enums.Organ>();
+            //var code = jo["Organ"].ToObject<Enums.Organ>();
             IssueInitialModel format = jo["InitialValue"].ToObject<IssueInitialModel>();
 
 
-            var result = Activator.CreateInstance(objectType, code, format);
+            var result = Activator.CreateInstance(objectType,/* code,*/ format);
 
             // Construct the Result object using the non-default constructor
             ////Result result = new Result(code, format);

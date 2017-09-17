@@ -8,11 +8,13 @@ using MBS.HR.Patterns.PatternRepository.AbstractFactory;
 
 namespace MBS.HR.Patterns.BusinessLayer
 {
-    class DefaultImplementation : PerOrganSettingFactory
+    [Serializable]
+    sealed class DefaultImplementation : PerOrganSettingFactory
     {
 
         
-        public DefaultImplementation(Enums.Organ org, IssueInitialModel init) : base(org, init)
+        public DefaultImplementation(IssueInitialModel init) 
+            : base(Enums.Organ.Shared, init)
         {
             
         }

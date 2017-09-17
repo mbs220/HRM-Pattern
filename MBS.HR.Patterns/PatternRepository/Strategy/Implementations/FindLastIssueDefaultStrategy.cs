@@ -8,7 +8,8 @@ using MBS.HR.Patterns.PatternRepository.AbstractFactory;
 
 namespace MBS.HR.Patterns.PatternRepository.Strategy.Implementations
 {
-   class FindLastIssueDefaultStrategy: IFindLastIssueStrategy
+    [Serializable]
+    class FindLastIssueDefaultStrategy : IFindLastIssueStrategy
     {
         //استراتژی پیدا کردن حکم آخر در اینجا پیاده و سفارشی می شود
         public LastIssueViewModel FindLastIssue(PerOrganSettingFactory context)

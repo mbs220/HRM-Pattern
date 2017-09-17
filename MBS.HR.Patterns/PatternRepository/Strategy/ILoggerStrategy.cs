@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MBS.HR.Patterns.BusinessModel
+namespace MBS.HR.Patterns.PatternRepository.Strategy
 {
-    [Serializable]
-    public class FormulaResponse
+    public interface ILoggerStrategy
     {
-        public double Result { get; set; }
+        void LogError(Exception ex);
     }
 }

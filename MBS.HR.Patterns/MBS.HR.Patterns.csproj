@@ -58,7 +58,7 @@
     <Compile Include="BusinessModel\LastIssueViewModel.cs" />
     <Compile Include="BusinessModel\WageFactorItem.cs" />
     <Compile Include="JsonConfig\PerOrganSettingFactoryJsonConverter.cs" />
-    <Compile Include="OutputFactorItem.cs" />
+    <Compile Include="BusinessModel\OutputFactorItem.cs" />
     <Compile Include="PatternRepository\Proxy\ExportStepsToUI.cs" />
     <Compile Include="PatternRepository\AbstractFactory\Interfaces\IStep1.cs" />
     <Compile Include="PatternRepository\AbstractFactory\Interfaces\IStep2.cs" />
@@ -66,13 +66,16 @@
     <Compile Include="PatternRepository\AbstractFactory\PerOrganSettingFactory.cs" />
     <Compile Include="PatternRepository\Proxy\IIssueProxy.cs" />
     <Compile Include="PatternRepository\Singleton\LoadGlobalSetting.cs" />
+    <Compile Include="PatternRepository\Strategy\ILoggerStrategy.cs" />
     <Compile Include="PatternRepository\Strategy\Implementations\CheckHasPermissionStrategy.cs" />
+    <Compile Include="PatternRepository\Strategy\Implementations\DnnLogStrategy.cs" />
     <Compile Include="PatternRepository\Strategy\Implementations\FindLastIssueDefaultStrategy.cs" />
     <Compile Include="PatternRepository\Strategy\ICheckHasPermissionStrategy.cs" />
     <Compile Include="PatternRepository\Strategy\IFindLastIssueStrategy.cs" />
     <Compile Include="PatternRepository\Template\BaseTemplate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\ModelSignManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

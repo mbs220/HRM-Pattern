@@ -12,5 +12,7 @@ namespace MBS.HR.Patterns.PatternRepository.Proxy
         IStep1 ExecuteFirst();
         IStep2 ExecuteSecond();
         IStep3 ExecuteThird();
+
+
     }
 }
